@@ -51,14 +51,14 @@ ALTER TABLE ONLY cards
     ADD CONSTRAINT pk_cards_id PRIMARY KEY (id);
 
 ALTER TABLE ONLY cards
-    ADD CONSTRAINT fk_card_board_id FOREIGN KEY (board_id) REFERENCES boards(id);
+    ADD CONSTRAINT fk_card_board_id FOREIGN KEY (board_id) REFERENCES boards(id) ON DELETE CASCADE ;
 
 ALTER TABLE ONLY cards
-    ADD CONSTRAINT fk_card_status_id FOREIGN KEY (status_id) REFERENCES statuses(id);
+    ADD CONSTRAINT fk_card_status_id FOREIGN KEY (status_id) REFERENCES statuses(id) ON DELETE CASCADE;
 
 
-INSERT INTO boards VALUES (2, 'Board 1');
-INSERT INTO boards VALUES (1, 'Board 2');
+INSERT INTO boards VALUES (1, 'Board 1');
+INSERT INTO boards VALUES (2, 'Board 2');
 
 
 INSERT INTO statuses VALUES (0, 'new');
