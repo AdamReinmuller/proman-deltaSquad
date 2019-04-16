@@ -1,4 +1,5 @@
 import csv
+import connection
 
 STATUSES_FILE = './data/statuses.csv'
 BOARDS_FILE = './data/boards.csv'
