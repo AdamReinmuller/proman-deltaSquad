@@ -29,7 +29,7 @@ CREATE TABLE cards (
     board_id integer,
     title text,
     status_id integer,
-    "order" integer
+    order_number integer
 );
 
 
@@ -77,8 +77,8 @@ INSERT INTO cards VALUES (6, 2, 'done card', 3, 1);
 
 
 
-SELECT pg_catalog.setval('statuses_id_seq', 1, true);
+SELECT pg_catalog.setval('statuses_id_seq', 4, true);
 
 SELECT pg_catalog.setval('boards_id_seq', 2, true);
 
-SELECT pg_catalog.setval('cards_id_seq', 2, true);
+SELECT pg_catalog.setval('cards_id_seq', 6, true);
