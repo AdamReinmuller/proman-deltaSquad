@@ -7,7 +7,11 @@
                 <li><a href="#" id="boards-button">Boards</a></li>
 
                 {% if session.get('username') == None %}
-                <li></li>
+                <li>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registration-modal" id="registration-button">
+                    Registration
+                    </button>
+                </li>
                 <li></li>
                 <li id="sign">You are signed out</li>
                 {% else %}
