@@ -1,5 +1,5 @@
 // It uses data_handler.js to visualize elements
-import { dataHandler } from "./data_handler.js";
+import {dataHandler} from "./data_handler.js";
 
 export let dom = {
     _appendToElement: function (elementToExtend, textToAppend, prepend = false) {
@@ -24,7 +24,7 @@ export let dom = {
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
-        dataHandler.getBoards(function(boards){
+        dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
         });
     },
@@ -34,7 +34,7 @@ export let dom = {
 
         let boardList = '';
 
-        for(let board of boards){
+        for (let board of boards) {
             boardList += `
                 <section class="board">
                     <div class="board-header"><span class="board-title">${board.title}</span>
@@ -62,14 +62,14 @@ export let dom = {
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
-        dataHandler.getCardsByBoardId(boardId, function(cards){
+        dataHandler.getCardsByBoardId(boardId, function (cards) {
             dom.showCards(cards, boardId);
         })
     },
     showCards: function (cards, boardId) {
         // shows the cards of a board
         // it adds necessary event listeners also
-        let statusList= [];
+        let statusList = [];
         let innerHtml = ``;
         for (let card of cards) {
             if (!statusList.includes(card.status_id)) {
@@ -106,7 +106,7 @@ export let dom = {
                 </div>
             `;
         }
-            const outerHtml = `
+        const outerHtml = `
             <div class="board-column">
                 ${innerHtml}
             </div>
@@ -123,7 +123,7 @@ export let dom = {
                     <div class="card-title">newTestCard</div>
                     </div>`;
         for (let button of addButtons) {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 dom._appendToElement(button.parentElement.nextElementSibling.childNodes[0], addMe)
             })
         }
@@ -139,15 +139,14 @@ export let dom = {
                 url: '/registration',
                 data: form.serialize(),
                 type: 'POST',
-                success: console.log('ok')
             })
                 .then(function (data) {
                         if (data) {
-                            let message = document.getElementById('registration-modal-body');
+                            let messageNode = document.getElementById('registration-modal-body');
                             // console.loge(data.response);
-                            message.insertAdjacentHTML('beforeend', `<p>${data.response}</p>`);
+                            messageNode.insertAdjacentHTML('beforeend', `<p>${data.response}</p>`);
                             setTimeout(function () {
-                                message.removeChild(message.lastChild)
+                                messageNode.removeChild(messageNode.lastChild)
                             }, 3000)
                         } else {
                             window.location.reload()
@@ -155,5 +154,33 @@ export let dom = {
                     }
                 )
         }
+    },
+
+    login: function () {
+        let username = $('#login-username-input').val();
+        let password = $('#login-password-input').val();
+        let form = $('#login-form');
+        if (username !== '' && password !== '') {
+            $.ajax({
+                url: '/login',
+                data: form.serialize(),
+                type: 'POST',
+                succes: console.log('ok')
+            })
+                .then(function (data) {
+                    if (data) {
+                        let messageNode = document.getElementById('login-modal-body');
+                        messageNode.insertAdjacentHTML('beforeend', `<p>${data.response}</p>`);
+                        setTimeout(function () {
+                            messageNode.removeChild(messageNode.lastChild)
+                        }, 3000)
+                    } else {
+                        window.location.reload()
+                    }
+
+                })
+        }
     }
+
+
 };

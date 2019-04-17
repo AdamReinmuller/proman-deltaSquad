@@ -19,7 +19,7 @@
                 </li>
                 <li id="sign">You are signed out</li>
                 {% else %}
-                <li><a href="#" id="logout">Logout</a></li>
+                <li><a href="/logout" id="logout">Logout</a></li>
                 <li id="sign">Logged in as {{session.get('username')}}</li>
                 {% endif %}
 

@@ -67,26 +67,26 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="login-modal-title">Registration</h5>
+                <h5 class="modal-title" id="login-modal-title">Login</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" id="login-modal-body">
                   <form method="post" id="login-form">
                       <div class="form-group">
                         <label for="login-username-input" class="col-form-label">Username:</label>
-                        <input type="text" class="form-control" id="login-username-input" placeholder="Username">
+                        <input type="text" class="form-control" id="login-username-input" placeholder="Username" name="username">
                       </div>
                       <div class="form-group">
                         <label for="login-password-input" class="col-form-label">Password:</label>
-                        <input type="password" class="form-control" id="login-password-input" placeholder="Password">
+                        <input type="password" class="form-control" id="login-password-input" placeholder="Password" name="password">
                       </div>
                   </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="#logger-button">Login!</button>
+                <button type="button" class="btn btn-primary" id="logger-button">Login!</button>
               </div>
             </div>
           </div>

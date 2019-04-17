@@ -6,7 +6,9 @@ function init() {
     dom.init();
     //activate registration
     let regStartButton = document.getElementById('registrate-button');
-    regStartButton.addEventListener('click', dom.registration)
+    regStartButton.addEventListener('click', dom.registration);
+    let loginStartButton = document.getElementById('logger-button');
+    loginStartButton.addEventListener('click', dom.login)
 
 }
 

@@ -5,7 +5,7 @@ import data_handler
 
 
 app = Flask(__name__)
-
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route("/")
 def index():
@@ -78,6 +78,7 @@ def registration():
 
 
 @app.route('/login', methods=['POST'])
+@json_response
 def login():
     user_name = request.form['username']
     password = request.form['password']
@@ -85,12 +86,17 @@ def login():
         good_password_hash = get_good_hash_by_user_name(user_name)
         if verify_password(password, good_password_hash):
             session['username'] = user_name
-            return redirect('/')
         else:
-            return 'invalid username or password'
+            data = {'response': 'invalid username or password'}
+            return data
     except IndexError:
-        return "invalid username or password"
+        data = {'response': 'invalid username or password'}
+        return data
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect('/')
 
 def main():
     app.run(debug=True)
