@@ -134,25 +134,35 @@ export let dom = {
         let passwordFirst = $('#registration-password-first').val();
         let passwordSecond = $('#registration-password-second').val();
         let form = $('#registration-form');
+        let checkbox = document.getElementById('registration-checkbox');
         if (username !== '' && passwordFirst !== '' && passwordSecond !== '') {
-            $.ajax({
-                url: '/registration',
-                data: form.serialize(),
-                type: 'POST',
-            })
-                .then(function (data) {
-                        if (data) {
-                            let messageNode = document.getElementById('registration-modal-body');
-                            // console.loge(data.response);
-                            messageNode.insertAdjacentHTML('beforeend', `<p>${data.response}</p>`);
-                            setTimeout(function () {
-                                messageNode.removeChild(messageNode.lastChild)
-                            }, 3000)
-                        } else {
-                            window.location.reload()
+            if (checkbox.checked) {
+                $.ajax({
+                    url: '/registration',
+                    data: form.serialize(),
+                    type: 'POST',
+                })
+                    .then(function (data) {
+                            if (data) {
+                                let messageNode = document.getElementById('registration-modal-body');
+                                // console.loge(data.response);
+                                messageNode.insertAdjacentHTML('beforeend', `<p>${data.response}</p>`);
+                                setTimeout(function () {
+                                    messageNode.removeChild(messageNode.lastChild)
+                                }, 3000)
+                            } else {
+                                window.location.reload()
+                            }
                         }
-                    }
-                )
+                    )
+            } else {
+                let messageNode = document.getElementById('registration-modal-body');
+                // console.loge(data.response);
+                messageNode.insertAdjacentHTML('beforeend', '<p>please agree our terms and cookies</p>');
+                setTimeout(function () {
+                    messageNode.removeChild(messageNode.lastChild)
+                }, 3000)
+            }
         }
     },
 
