@@ -99,9 +99,12 @@ INSERT INTO statuses VALUES (3, 'done');
 INSERT INTO cards VALUES (1, 1, 'new card', 0, 0);
 INSERT INTO cards VALUES (2, 1, 'new card', 0, 1);
 INSERT INTO cards VALUES (3, 1, 'in progress card', 1, 0);
-INSERT INTO cards VALUES (4, 2, 'planning', 2, 0);
-INSERT INTO cards VALUES (5, 2, 'done card', 3, 0);
-INSERT INTO cards VALUES (6, 2, 'done card', 3, 1);
+INSERT INTO cards VALUES (4, 1, 'planning', 2, 0);
+INSERT INTO cards VALUES (5, 1, 'planning card', 2, 1);
+INSERT INTO cards VALUES (6, 1, 'done card', 3, 0);
+INSERT INTO cards VALUES (7, 1, 'done card', 3, 1);
+INSERT INTO cards VALUES (8, 1, 'done card', 3, 2);
+INSERT INTO cards VALUES (9, 2, 'done card', 3, 3);
 
 
 INSERT INTO users VALUES (0, 'kris', 'astfgl');

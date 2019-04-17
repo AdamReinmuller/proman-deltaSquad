@@ -110,7 +110,7 @@ def get_cards_by_boardID_and_statusID(cursor, boardID, statusID):
 def delete_card(cursor, cardID):
     cursor.execute("""
     DELETE FROM cards 
-    WHERE id=%(card_id)s;
+    WHERE id=%(card_id);
     """,
                    {'card_id': cardID})
 
@@ -121,7 +121,7 @@ def delete_board(cursor, boardID):
     DELETE FROM cards 
     WHERE cards.board_id=%(boardID);
     DELETE FROM boards
-    WHERE boards.id=%(boardID)s;
+    WHERE boards.id=%(boardID);
     """,
                    {'boardID': boardID})
 
@@ -136,3 +136,20 @@ def edit_board_name(cursor, boardID, newName):
                    {'boardID': boardID, 'newName': newName}
                    )
 
+
+@connection.connection_handler
+def get_statuses(cursor):
+    cursor.execute("""
+    SELECT * FROM statuses 
+    """)
+
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_all_cards(cursor):
+    cursor.execute("""
+    SELECT * FROM cards 
+    """)
+
+    return cursor.fetchall()
