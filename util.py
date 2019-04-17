@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import jsonify
 import connection
+import bcrypt
 
 
 def json_response(func):
@@ -34,6 +35,17 @@ def check_existing_username(cursor, username):
     result = cursor.fetchall()
     return result
 
+
+def hash_password(plain_text_password):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    value = bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+    return value
 
 if __name__ == '__main__':
     print(set_card_order(1, 'done card'))
