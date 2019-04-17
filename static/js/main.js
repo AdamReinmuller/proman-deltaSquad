@@ -6,7 +6,8 @@ function init() {
     dom.init();
     // loads the boards to the screen
     dom.loadBoards();
-
+    //activate registration
+    dom.registration();
 }
 
 init();

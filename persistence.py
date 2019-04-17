@@ -33,6 +33,19 @@ def insert_new_card(cursor, board_id, title, status_id):
                        {'board_id': board_id, 'title': title, 'status': status_id})
 
 
+@connection.connection_handler
+def registrate_user(cursor, username, password):
+    password_hash = util.hash_password(password)
+    cursor.execute('''INSERT INTO users (username, password_hash)
+                      VALUES (%(username)s, %(password_hash)s)''',
+                    {'username':username, 'password_hash':password_hash})
+
+@connection.connection_handler
+def get_good_hash_by_user_name(cursor, user_name):
+    cursor.execute('''SELECT password_hash FROM users WHERE username = %(user_name)s''', {'user_name': user_name})
+    password_hash = cursor.fetchall()[0]['password_hash']
+    return password_hash
+
 def get_board_by_ID(cursor, boardID):
     cursor.execute("""
     SELECT * FROM boards 
@@ -101,4 +114,5 @@ def edit_board_name(cursor, boardID, newName):
         """,
                    {'boardID': boardID, 'newName': newName}
                    )
+
 

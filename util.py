@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import jsonify
 import connection
+import bcrypt
 
 def json_response(func):
     """
@@ -22,6 +23,19 @@ def set_card_order(cursor, board_id, title):
                       LIMIT 1;''', {'board_id':board_id, 'title':title})
     order_number = cursor.fetchone()['order_number']
     return order_number
+
+
+@connection.connection_handler
+def check_existing_username(cursor, username):
+    cursor.execute('''SELECT * FROM users
+                      WHERE username = %(username)s''', {'username': username})
+    result = cursor.fetchall()
+    return result
+
+def hash_password(plain_text_password):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
 
 if __name__ == '__main__':
     print(set_card_order(1, 'done card'))

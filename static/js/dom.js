@@ -1,5 +1,5 @@
 // It uses data_handler.js to visualize elements
-import { dataHandler } from "./data_handler.js";
+import {dataHandler} from "./data_handler.js";
 
 export let dom = {
     _appendToElement: function (elementToExtend, textToAppend, prepend = false) {
@@ -22,7 +22,7 @@ export let dom = {
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
-        dataHandler.getBoards(function(boards){
+        dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
         });
     },
@@ -32,7 +32,7 @@ export let dom = {
 
         let boardList = '';
 
-        for(let board of boards){
+        for (let board of boards) {
             boardList += `
                 <li>${board.title}</li>
             `;
@@ -53,5 +53,29 @@ export let dom = {
         // shows the cards of a board
         // it adds necessary event listeners also
     },
-    // here comes more features
+    // activate registration button
+    registration: function () {
+        $('#registrate-button').click(function () {
+            let username = $('#registration-username-input');
+            let passwordFirst = $('#registration-password-first');
+            let passwordSecond = $('#registration-password-second');
+            if (username !== '' && passwordFirst !== '' && passwordSecond !== '') {
+                $.ajax({
+                    url: '/registration',
+                    method: 'POST',
+                    data: {usernama: username, passwordFirst: passwordFirst, passwordSecond: passwordSecond},
+                    success: function (data) {
+                        if (data === 'No') {
+                            alert('nem jao')
+                        } else {
+                            $('#registration-modal').hide();
+                            location.reloda()
+                        }
+                    }
+                })
+            } else {
+                alert('tőcsd ki a összeset')
+            }
+        })
+    }
 };
