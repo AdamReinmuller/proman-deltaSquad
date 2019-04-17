@@ -45,6 +45,15 @@ def add_new_board(cursor):
 
 
 @connection.connection_handler
+def add_new_private_board(cursor, user):
+    cursor.execute("""
+    INSERT INTO boards (title)
+    VALUES (%(defaultTitle)s);
+    """,
+                   {'defaultTitle': "New board"})
+
+
+@connection.connection_handler
 def get_board_by_ID(cursor, boardID):
     cursor.execute("""
     SELECT * FROM boards 
@@ -113,7 +122,7 @@ def delete_board(cursor, boardID):
 def edit_board_name(cursor, boardID, newName):
     cursor.execute("""
         UPDATE boards 
-        SET boards.title = %(newName)
+        SET boards.title = %(newName)s
         WHERE id=%(boardID)s;
         """,
                    {'boardID': boardID, 'newName': newName}
