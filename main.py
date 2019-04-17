@@ -3,6 +3,7 @@ from util import json_response
 
 import data_handler
 
+
 app = Flask(__name__)
 
 
@@ -50,6 +51,44 @@ def get_cards_for_board(board_id: int):
     :param board_id: id of the parent board
     """
     return data_handler.get_cards_for_board(board_id)
+
+
+@app.route('/registration', methods=['POST'])
+@json_response
+def registration():
+    if request.method == 'POST':
+        try:
+            data = request.form
+            username = data['username']
+            password_first = data['password_1']
+            password_second = data['password_2']
+            if password_first == password_second:
+                if not check_existing_username(username):
+                    persistence.registrate_user(username, password_first)
+                else:
+                    data = {'response': 'username already exists'}
+                    return data
+
+            else:
+                data = {'response': 'passwords does not match'}
+                return data
+        except:
+            return 'something went wrong :( '
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    user_name = request.form['username']
+    password = request.form['password']
+    try:
+        good_password_hash = get_good_hash_by_user_name(user_name)
+        if verify_password(password, good_password_hash):
+            session['username'] = user_name
+            return redirect('/')
+        else:
+            return 'invalid username or password'
+    except IndexError:
+        return "invalid username or password"
 
 
 def main():

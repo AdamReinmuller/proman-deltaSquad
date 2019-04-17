@@ -127,5 +127,33 @@ export let dom = {
                 dom._appendToElement(button.parentElement.nextElementSibling.childNodes[0], addMe)
             })
         }
+    },
+
+    registration: function () {
+        let username = $('#registration-username-input').val();
+        let passwordFirst = $('#registration-password-first').val();
+        let passwordSecond = $('#registration-password-second').val();
+        let form = $('#registration-form');
+        if (username !== '' && passwordFirst !== '' && passwordSecond !== '') {
+            $.ajax({
+                url: '/registration',
+                data: form.serialize(),
+                type: 'POST',
+                success: console.log('ok')
+            })
+                .then(function (data) {
+                        if (data) {
+                            let message = document.getElementById('registration-modal-body');
+                            // console.loge(data.response);
+                            message.insertAdjacentHTML('beforeend', `<p>${data.response}</p>`);
+                            setTimeout(function () {
+                                message.removeChild(message.lastChild)
+                            }, 3000)
+                        } else {
+                            window.location.reload()
+                        }
+                    }
+                )
+        }
     }
 };
