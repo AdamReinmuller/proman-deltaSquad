@@ -1,6 +1,6 @@
-from flask import Flask, render_template, url_for
-from util import json_response
-
+from flask import Flask, render_template, url_for, request
+from util import json_response, check_existing_username
+import persistence
 import data_handler
 
 
