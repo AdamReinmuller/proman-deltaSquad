@@ -54,5 +54,6 @@ def verify_password(plain_text_password, hashed_password):
     value = bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
     return value
 
+
 if __name__ == '__main__':
     print(set_card_order(1, 'done card'))

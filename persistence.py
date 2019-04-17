@@ -105,7 +105,7 @@ def get_cards_by_boardID(cursor, boardID):
 def delete_card(cursor, cardID):
     cursor.execute("""
     DELETE FROM cards 
-    WHERE id=%(card_id);
+    WHERE id=%(card_id)s;
     """,
                    {'card_id': cardID})
 
@@ -114,9 +114,9 @@ def delete_card(cursor, cardID):
 def delete_board(cursor, boardID):
     cursor.execute("""
     DELETE FROM cards 
-    WHERE cards.board_id=%(boardID);
+    WHERE cards.board_id=%(boardID)s;
     DELETE FROM boards
-    WHERE boards.id=%(boardID);
+    WHERE boards.id=%(boardID)s;
     """,
                    {'boardID': boardID})
 

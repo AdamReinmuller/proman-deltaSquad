@@ -3,9 +3,9 @@ from util import json_response, check_existing_username, verify_password, get_go
 import persistence
 import data_handler
 
-
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
 
 @app.route("/")
 def index():
@@ -73,7 +73,7 @@ def registration():
                 data = {'response': 'passwords does not match'}
                 return data
         except:
-            data = {'response':'something went wrong :( '}
+            data = {'response': 'something went wrong :( '}
             return data
 
 
@@ -93,10 +93,12 @@ def login():
         data = {'response': 'invalid username or password'}
         return data
 
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect('/')
+
 
 def main():
     app.run(debug=True)
