@@ -7,13 +7,23 @@
                 <li><a href="#" id="boards-button">Boards</a></li>
 
                 {% if session.get('username') == None %}
-                <li><a href="#" id="registration">Registration</a></li>
-                <li><a href="#" id="login">Login</a></li>
+                <li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registration-modal" id="registration-button">
+                Registration
+                </button>
+                </li>
+                <li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal" id="login-button">
+                Login
+                </button>
+                </li>
                 <li id="sign">You are signed out</li>
                 {% else %}
                 <li><a href="#" id="logout">Logout</a></li>
                 <li id="sign">Logged in as {{session.get('username')}}</li>
                 {% endif %}
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal" id="login-button">
+        Login
+        </button>
 
             </ul>
         </nav>
