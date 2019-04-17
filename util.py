@@ -36,6 +36,13 @@ def check_existing_username(cursor, username):
     return result
 
 
+@connection.connection_handler
+def get_good_hash_by_user_name(cursor, user_name):
+    cursor.execute('''SELECT hashed_pw FROM users WHERE user_name = %(user_name)s''', {'user_name': user_name})
+    password_hash = cursor.fetchall()[0]['password_hash']
+    return password_hash
+
+
 def hash_password(plain_text_password):
     # By using bcrypt, the salt is saved into the hash itself
     hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())

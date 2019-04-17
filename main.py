@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, session, redirect
-from util import json_response, check_existing_username, verify_password, hash_password
+from util import json_response, check_existing_username, verify_password, get_good_hash_by_user_name
 import persistence
 import data_handler
 
