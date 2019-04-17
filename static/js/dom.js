@@ -37,14 +37,20 @@ export let dom = {
 
         for(let board of boards){
             boardList += `
-                <li class="board-title" id="boardSlot${board.id}">${board.title}</li>
+                <section class="board">
+                    <div class="board-header"><span class="board-title">${board.title}</span>
+                        <button class="board-add">Add Card</button>
+                        <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div id="boardSlot${board.id}" class="board-columns"></div>
+                </section>
             `;
         }
 
         const outerHtml = `
-            <ul class="board-container">
+            <div class="board-container">
                 ${boardList}
-            </ul>
+            </div>
         `;
 
         this._appendToElement(document.querySelector('#boards'), outerHtml);
@@ -70,25 +76,43 @@ export let dom = {
                 statusList.push(card.status_id);
             }
         }
+        //             <div class="board-column-title">New</div>
+        //             <div class="board-column-content">
+        //                 <div class="card">
+        //                     <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+        //                     <div class="card-title">Card 1</div>
+        //                 </div>
+        //                 <div class="card">
+        //                     <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+        //                     <div class="card-title">Card 2</div>
+        //                 </div>
+        //             </div>
         for (let status of statusList) {
             innerHtml += `
+                <div class="board-column">
                 <div class="board-column-title" id="${boardId}/${status}">
                     ${status}
+                </div>
+                <div class="board-column-content">
                     ${cards.map(function (card) {
                 return `
-                            ${(card.status_id === status) ? `<li>${card.title}</li>` : ''}
+                            ${(card.status_id === status) ? `<div class="card">
+                                                                <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+                                                                <div class="card-title">${card.title}</div>
+                                                            </div>` : ''}
                         `
             }).join('')}
+                </div>
                 </div>
             `;
         }
             const outerHtml = `
-            <ul class="status">
+            <div class="board-column">
                 ${innerHtml}
-            </ul>
+            </div>
         `;
 
-        this._appendToElement(document.querySelector(`#boardSlot${boardId}`), outerHtml)
+        this._appendToElement(document.querySelector(`#boardSlot${boardId}`), innerHtml)
 
     },
     // here comes more features
