@@ -19,9 +19,6 @@ export let dom = {
     },
     init: function () {
         // This function should run once, when the page is loaded.
-        // this.loadBoards();
-        this.loadBoards();
-        this.loadCards();
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
@@ -37,83 +34,24 @@ export let dom = {
 
         for (let board of boards) {
             boardList += `
-                <section class="board">
-                    <div class="board-header"><span class="board-title">${board.title}</span>
-                        <button class="board-add">Add Card</button>
-                        <button class="board-toggle"><i class="fas fa-chevron-down"></i></button>
-                    </div>
-                    <div id="boardSlot${board.id}" class="board-columns"></div>
-                </section>
+                <li>${board.title}</li>
             `;
         }
 
         const outerHtml = `
-            <div class="board-container">
+            <ul class="board-container">
                 ${boardList}
-            </div>
+            </ul>
         `;
 
         this._appendToElement(document.querySelector('#boards'), outerHtml);
-
-        for (let board of boards) {
-            this.loadCards(board.id)
-        }
-
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
-        dataHandler.getCardsByBoardId(boardId, function(cards){
-            dom.showCards(cards, boardId);
-        })
     },
-    showCards: function (cards, boardId) {
+    showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
-        let statusList= [];
-        let innerHtml = ``;
-        for (let card of cards) {
-            if (!statusList.includes(card.status_id)) {
-                statusList.push(card.status_id);
-            }
-        }
-        //             <div class="board-column-title">New</div>
-        //             <div class="board-column-content">
-        //                 <div class="card">
-        //                     <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
-        //                     <div class="card-title">Card 1</div>
-        //                 </div>
-        //                 <div class="card">
-        //                     <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
-        //                     <div class="card-title">Card 2</div>
-        //                 </div>
-        //             </div>
-        for (let status of statusList) {
-            innerHtml += `
-                <div class="board-column">
-                <div class="board-column-title" id="${boardId}/${status}">
-                    ${status}
-                </div>
-                <div class="board-column-content">
-                    ${cards.map(function (card) {
-                return `
-                            ${(card.status_id === status) ? `<div class="card">
-                                                                <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
-                                                                <div class="card-title">${card.title}</div>
-                                                            </div>` : ''}
-                        `
-            }).join('')}
-                </div>
-                </div>
-            `;
-        }
-            const outerHtml = `
-            <div class="board-column">
-                ${innerHtml}
-            </div>
-        `;
-
-        this._appendToElement(document.querySelector(`#boardSlot${boardId}`), innerHtml)
-
     },
     // activate registration button
 
