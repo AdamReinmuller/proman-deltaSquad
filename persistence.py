@@ -147,4 +147,12 @@ def get_all_cards(cursor):
     SELECT * FROM cards 
     """)
 
+
+@connection.connection_handler
+def registrate_user(cursor, username, password):
+    password_hash = util.hash_password(password)
+    cursor.execute('''INSERT INTO users (user_name, hashed_pw)
+                      VALUES (%(username)s, %(password_hash)s)''',
+                   {'username': username, 'password_hash': password_hash})
+
     return cursor.fetchall()

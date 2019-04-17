@@ -35,13 +35,5 @@ def check_existing_username(cursor, username):
     return result
 
 
-@connection.connection_handler
-def registrate_user(cursor, username, password):
-    password_hash = util.hash_password(password)
-    cursor.execute('''INSERT INTO users (user_name, hashed_pw)
-                      VALUES (%(username)s, %(password_hash)s)''',
-                   {'username': username, 'password_hash': password_hash})
-
-
 if __name__ == '__main__':
     print(set_card_order(1, 'done card'))
