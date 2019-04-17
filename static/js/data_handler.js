@@ -19,6 +19,16 @@ export let dataHandler = {
     _api_post: function (url, data, callback) {
         // it is not called from outside
         // sends the data to the API, and calls callback function
+
+        // var data = {username: 'example'};
+
+        fetch(url, {
+          method: 'POST', // or 'PUT'
+          credentials: 'same-origin',
+          body: JSON.stringify(data), // data can be `string` or {object}!
+        })
+        .then(res => res.json())
+        .then(response => callback(response))
     },
     init: function () {
     },
@@ -80,6 +90,11 @@ export let dataHandler = {
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
+        let new_card = {'title': cardTitle, 'board_id': boardId, 'status_id': statusId};
+        this._api_post(`/new-card`, new_card, (response) => {
+            this._data = response;
+            callback(response);
+        })
     }
     // here comes more features
 };

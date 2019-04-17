@@ -57,6 +57,7 @@ export let dom = {
         for (let board of boards) {
             this.loadCards(board.id)
         }
+        dom.addCard()
 
     },
     loadCards: function (boardId) {
@@ -111,8 +112,20 @@ export let dom = {
             </div>
         `;
 
-        this._appendToElement(document.querySelector(`#boardSlot${boardId}`), innerHtml)
+        this._appendToElement(document.querySelector(`#boardSlot${boardId}`), innerHtml);
 
     },
     // here comes more features
+    addCard: function () {
+        let addButtons = document.querySelectorAll('.board-add');
+        let addMe = `<div class="card">
+                    <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+                    <div class="card-title">newTestCard</div>
+                    </div>`;
+        for (let button of addButtons) {
+            button.addEventListener('click', function() {
+                dom._appendToElement(button.parentElement.nextElementSibling.childNodes[0], addMe)
+            })
+        }
+    }
 };
