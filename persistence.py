@@ -1,4 +1,6 @@
-import csv
+import connection
+from psycopg2 import sql
+import util
 
 STATUSES_FILE = './data/statuses.csv'
 BOARDS_FILE = './data/boards.csv'
@@ -7,45 +9,121 @@ CARDS_FILE = './data/cards.csv'
 _cache = {}  # We store cached data in this dict to avoid multiple file readings
 
 
-def _read_csv(file_name):
+@connection.connection_handler
+def read_database_table(cursor, db_table):
     """
-    Reads content of a .csv file
+    Reads content from a database-table
     :param file_name: relative path to data file
     :return: OrderedDict
     """
-    with open(file_name) as boards:
-        rows = csv.DictReader(boards, delimiter=',', quotechar='"')
-        formatted_data = []
-        for row in rows:
-            formatted_data.append(dict(row))
-        return formatted_data
+    cursor.execute(sql.SQL('''SELECT *
+                              FROM {database_name};''').format(database_name=sql.Identifier(db_table)))
+    data = cursor.fetchall()
+    return data
 
 
-def _get_data(data_type, file, force):
-    """
-    Reads defined type of data from file or cache
-    :param data_type: key where the data is stored in cache
-    :param file: relative path to data file
-    :param force: if set to True, cache will be ignored
-    :return: OrderedDict
-    """
-    if force or data_type not in _cache:
-        _cache[data_type] = _read_csv(file)
-    return _cache[data_type]
+@connection.connection_handler
+def insert_new_card(cursor, board_id, title, status_id):
+    order_number = util.set_card_order(board_id, title)
+    if order_number:
+        cursor.execute('''INSERT INTO cards (board_id, title, status_id, order_number) 
+        VALUES (%(board_id)s, %(title)s, %(status)s, %(order)s);''',
+                       {'board_id': board_id, 'title': title, 'status': status_id, 'order': order_number + 1})
+    else:
+        cursor.execute(
+            '''INSERT INTO cards (board_id, title, status_id, order_number) VALUES (%(board_id)s, %(title)s, %(status)s, 0);''',
+            {'board_id': board_id, 'title': title, 'status': status_id})
 
 
-def clear_cache():
-    for k in list(_cache.keys()):
-        _cache.pop(k)
+@connection.connection_handler
+def add_new_board(cursor):
+    cursor.execute("""
+    INSERT INTO boards (title)
+    VALUES (%(defaultTitle)s);
+    """,
+                   {'defaultTitle': "New board"})
 
 
-def get_statuses(force=False):
-    return _get_data('statuses', STATUSES_FILE, force)
+@connection.connection_handler
+def add_new_private_board(cursor, user):
+    cursor.execute("""
+    INSERT INTO boards (title)
+    VALUES (%(defaultTitle)s);
+    """,
+                   {'defaultTitle': "New board"})
 
 
-def get_boards(force=False):
-    return _get_data('boards', BOARDS_FILE, force)
+@connection.connection_handler
+def get_board_by_ID(cursor, boardID):
+    cursor.execute("""
+    SELECT * FROM boards 
+    JOIN cards ON boards.id = cards.board_id
+    JOIN statuses ON cards.status_id = statuses.id
+    WHERE boards.id=%(boardID)s;
+    """,
+                   {'boardID': boardID})
+
+    return cursor.fetchall()
 
 
-def get_cards(force=False):
-    return _get_data('cards', CARDS_FILE, force)
+@connection.connection_handler
+def get_all_boards(cursor):
+    cursor.execute("""
+    SELECT * FROM boards 
+    JOIN cards ON boards.id = cards.board_id
+    JOIN statuses ON cards.status_id = statuses.id;
+    """)
+
+    return cursor.fetchall()
+
+
+def get_card_by_id(cursor, cardID):
+    cursor.execute("""
+    SELECT * FROM cards
+    WHERE cards.id = %(cardID)s;
+    """,
+                   {'cardID': cardID})
+
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_cards_by_boardID_and_statusID(cursor, boardID, statusID):
+    cursor.execute("""
+    SELECT * FROM cards 
+    WHERE board_id=%(board_id)s AND status_id=%(statusID)s;
+    """,
+                   {'board_id': boardID, 'status_id': statusID})
+
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def delete_card(cursor, cardID):
+    cursor.execute("""
+    DELETE FROM cards 
+    WHERE id=%(card_id);
+    """,
+                   {'card_id': cardID})
+
+
+@connection.connection_handler
+def delete_board(cursor, boardID):
+    cursor.execute("""
+    DELETE FROM cards 
+    WHERE cards.board_id=%(boardID);
+    DELETE FROM boards
+    WHERE boards.id=%(boardID);
+    """,
+                   {'boardID': boardID})
+
+
+@connection.connection_handler
+def edit_board_name(cursor, boardID, newName):
+    cursor.execute("""
+        UPDATE boards 
+        SET boards.title = %(newName)s
+        WHERE id=%(boardID)s;
+        """,
+                   {'boardID': boardID, 'newName': newName}
+                   )

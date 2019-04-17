@@ -1,0 +1,46 @@
+header {
+    border-bottom-style: outset;
+}
+
+header::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.navBar-container {
+
+}
+
+
+#sign {
+    float: right;
+    color: dimgray;
+}
+
+
+nav {
+    float: left;
+    width: 100%;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav li {
+    display: inline-block;
+    margin: 0 25px;
+    padding: 15px 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: dimgray;
+}
+
+nav a:hover {
+    color: black;
+}
