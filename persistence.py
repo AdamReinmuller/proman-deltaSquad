@@ -38,15 +38,10 @@ def insert_new_card(cursor, board_id, title, status_id):
 @connection.connection_handler
 def registrate_user(cursor, username, password):
     password_hash = util.hash_password(password)
-    cursor.execute('''INSERT INTO users (username, password_hash)
+    cursor.execute('''INSERT INTO users (user_name, hashed_pw)
                       VALUES (%(username)s, %(password_hash)s)''',
                     {'username':username, 'password_hash':password_hash})
 
-@connection.connection_handler
-def get_good_hash_by_user_name(cursor, user_name):
-    cursor.execute('''SELECT password_hash FROM users WHERE username = %(user_name)s''', {'user_name': user_name})
-    password_hash = cursor.fetchall()[0]['password_hash']
-    return password_hash
 
 @connection.connection_handler
 def add_new_board(cursor):
@@ -115,7 +110,7 @@ def get_cards_by_boardID_and_statusID(cursor, boardID, statusID):
 def delete_card(cursor, cardID):
     cursor.execute("""
     DELETE FROM cards 
-    WHERE id=%(card_id);
+    WHERE id=%(card_id)s;
     """,
                    {'card_id': cardID})
 
@@ -126,7 +121,7 @@ def delete_board(cursor, boardID):
     DELETE FROM cards 
     WHERE cards.board_id=%(boardID);
     DELETE FROM boards
-    WHERE boards.id=%(boardID);
+    WHERE boards.id=%(boardID)s;
     """,
                    {'boardID': boardID})
 

@@ -1,5 +1,5 @@
-from flask import Flask, render_template, url_for, request, json
-from util import json_response, check_existing_username
+from flask import Flask, render_template, url_for, request, json, session, redirect
+from util import json_response, check_existing_username, get_good_hash_by_user_name,verify_password
 import persistence
 import data_handler
 
@@ -44,17 +44,18 @@ def registration():
             if password_first == password_second and check_existing_username:
                 persistence.registrate_user(username, password_first)
             else:
+                print('egyelőre nem tom')
         except:
             print('valami')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     user_name = request.form['username']
     password = request.form['password']
     try:
-        good_password_hash = persistence.get_good_hash_by_user_name(user_name)
-        if util.verify_password(password, good_password_hash):
+        good_password_hash = get_good_hash_by_user_name(user_name)
+        if verify_password(password, good_password_hash):
             session['username'] = user_name
             return redirect('/')
         else:
