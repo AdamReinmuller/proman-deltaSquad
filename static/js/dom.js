@@ -21,7 +21,6 @@ export let dom = {
         // This function should run once, when the page is loaded.
         // this.loadBoards();
         this.loadBoards();
-        this.loadCards();
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
