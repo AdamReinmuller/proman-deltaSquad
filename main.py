@@ -20,16 +20,17 @@ def get_boards():
     """
     All the boards
     """
-    return data_handler.get_boards()
+    asd = data_handler.get_boards()
+    return asd
 
 
-@app.route("/get-statuses")
-@json_response
-def get_statuses(status_id: int):
-    """
-    Get all status
-    """
-    return data_handler.get_statuses()
+# @app.route("/get-statuses")
+# @json_response
+# def get_statuses(status_id: int):
+#     """
+#     Get all status
+#     """
+#     return data_handler.get_statuses()
 
 
 @app.route("/get-statuses/<status_id>")

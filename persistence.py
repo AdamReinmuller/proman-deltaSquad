@@ -9,6 +9,11 @@ CARDS_FILE = './data/cards.csv'
 _cache = {}  # We store cached data in this dict to avoid multiple file readings
 
 
+def clear_cache():
+    for k in list(_cache.keys()):
+        _cache.pop(k)
+
+
 @connection.connection_handler
 def read_database_table(cursor, db_table):
     """
@@ -70,8 +75,6 @@ def get_board_by_ID(cursor, boardID):
 def get_all_boards(cursor):
     cursor.execute("""
     SELECT * FROM boards 
-    JOIN cards ON boards.id = cards.board_id
-    JOIN statuses ON cards.status_id = statuses.id;
     """)
 
     return cursor.fetchall()
@@ -88,12 +91,12 @@ def get_card_by_id(cursor, cardID):
 
 
 @connection.connection_handler
-def get_cards_by_boardID_and_statusID(cursor, boardID, statusID):
+def get_cards_by_boardID(cursor, boardID):
     cursor.execute("""
     SELECT * FROM cards 
-    WHERE board_id=%(board_id)s AND status_id=%(statusID)s;
+    WHERE board_id=%(board_id)s;
     """,
-                   {'board_id': boardID, 'status_id': statusID})
+                   {'board_id': boardID})
 
     return cursor.fetchall()
 
@@ -127,3 +130,21 @@ def edit_board_name(cursor, boardID, newName):
         """,
                    {'boardID': boardID, 'newName': newName}
                    )
+
+
+@connection.connection_handler
+def get_statuses(cursor):
+    cursor.execute("""
+    SELECT * FROM statuses 
+    """)
+
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_all_cards(cursor):
+    cursor.execute("""
+    SELECT * FROM cards 
+    """)
+
+    return cursor.fetchall()
