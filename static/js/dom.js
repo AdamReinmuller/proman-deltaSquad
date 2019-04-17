@@ -19,6 +19,9 @@ export let dom = {
     },
     init: function () {
         // This function should run once, when the page is loaded.
+        // this.loadBoards();
+        this.loadBoards();
+        this.loadCards();
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
@@ -34,7 +37,7 @@ export let dom = {
 
         for(let board of boards){
             boardList += `
-                <li>${board.title}</li>
+                <li class="board-title" id="boardSlot${board.id}">${board.title}</li>
             `;
         }
 
@@ -45,13 +48,48 @@ export let dom = {
         `;
 
         this._appendToElement(document.querySelector('#boards'), outerHtml);
+
+        for (let board of boards) {
+            this.loadCards(board.id)
+        }
+
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
+        dataHandler.getCardsByBoardId(boardId, function(cards){
+            dom.showCards(cards, boardId);
+        })
     },
-    showCards: function (cards) {
+    showCards: function (cards, boardId) {
         // shows the cards of a board
         // it adds necessary event listeners also
+        let statusList= [];
+        let innerHtml = ``;
+        for (let card of cards) {
+            if (!statusList.includes(card.status_id)) {
+                statusList.push(card.status_id);
+            }
+        }
+        for (let status of statusList) {
+            innerHtml += `
+                <div class="board-column-title" id="${boardId}/${status}">
+                    ${status}
+                    ${cards.map(function (card) {
+                return `
+                            ${(card.status_id === status) ? `<li>${card.title}</li>` : ''}
+                        `
+            }).join('')}
+                </div>
+            `;
+        }
+            const outerHtml = `
+            <ul class="status">
+                ${innerHtml}
+            </ul>
+        `;
+
+        this._appendToElement(document.querySelector(`#boardSlot${boardId}`), outerHtml)
+
     },
     // here comes more features
 };
