@@ -4,7 +4,9 @@ import { dom } from "./dom.js";
 function init() {
     // init data
     dom.init();
-
+    //activate registration
+    let regStartButton = document.getElementById('registrate-button');
+    regStartButton.addEventListener('click', dom.registration)
 
 }
 

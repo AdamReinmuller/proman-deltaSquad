@@ -73,7 +73,8 @@ def registration():
                 data = {'response': 'passwords does not match'}
                 return data
         except:
-            return 'something went wrong :( '
+            data = {'response':'something went wrong :( '}
+            return data
 
 
 @app.route('/login', methods=['POST'])
