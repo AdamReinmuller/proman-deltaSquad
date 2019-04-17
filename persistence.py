@@ -26,13 +26,25 @@ def read_database_table(cursor, db_table):
 def insert_new_card(cursor, board_id, title, status_id):
     order_number = util.set_card_order(board_id, title)
     if order_number:
-        cursor.execute('''INSERT INTO cards (board_id, title, status_id, order_number) VALUES (%(board_id)s, %(title)s, %(status)s, %(order)s);''',
-                       {'board_id':board_id, 'title':title, 'status':status_id, 'order':order_number+1})
+        cursor.execute('''INSERT INTO cards (board_id, title, status_id, order_number) 
+        VALUES (%(board_id)s, %(title)s, %(status)s, %(order)s);''',
+                       {'board_id': board_id, 'title': title, 'status': status_id, 'order': order_number + 1})
     else:
-        cursor.execute('''INSERT INTO cards (board_id, title, status_id, order_number) VALUES (%(board_id)s, %(title)s, %(status)s, 0);''',
-                       {'board_id': board_id, 'title': title, 'status': status_id})
+        cursor.execute(
+            '''INSERT INTO cards (board_id, title, status_id, order_number) VALUES (%(board_id)s, %(title)s, %(status)s, 0);''',
+            {'board_id': board_id, 'title': title, 'status': status_id})
 
 
+@connection.connection_handler
+def add_new_board(cursor):
+    cursor.execute("""
+    INSERT INTO boards (title)
+    VALUES (%(defaultTitle)s);
+    """,
+                   {'defaultTitle': "New board"})
+
+
+@connection.connection_handler
 def get_board_by_ID(cursor, boardID):
     cursor.execute("""
     SELECT * FROM boards 
@@ -45,6 +57,7 @@ def get_board_by_ID(cursor, boardID):
     return cursor.fetchall()
 
 
+@connection.connection_handler
 def get_all_boards(cursor):
     cursor.execute("""
     SELECT * FROM boards 
@@ -65,6 +78,7 @@ def get_card_by_id(cursor, cardID):
     return cursor.fetchone()
 
 
+@connection.connection_handler
 def get_cards_by_boardID_and_statusID(cursor, boardID, statusID):
     cursor.execute("""
     SELECT * FROM cards 
@@ -75,6 +89,7 @@ def get_cards_by_boardID_and_statusID(cursor, boardID, statusID):
     return cursor.fetchall()
 
 
+@connection.connection_handler
 def delete_card(cursor, cardID):
     cursor.execute("""
     DELETE FROM cards 
@@ -83,6 +98,7 @@ def delete_card(cursor, cardID):
                    {'card_id': cardID})
 
 
+@connection.connection_handler
 def delete_board(cursor, boardID):
     cursor.execute("""
     DELETE FROM cards 
@@ -93,6 +109,7 @@ def delete_board(cursor, boardID):
                    {'boardID': boardID})
 
 
+@connection.connection_handler
 def edit_board_name(cursor, boardID, newName):
     cursor.execute("""
         UPDATE boards 
@@ -101,4 +118,3 @@ def edit_board_name(cursor, boardID, newName):
         """,
                    {'boardID': boardID, 'newName': newName}
                    )
-
