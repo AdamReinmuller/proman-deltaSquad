@@ -23,5 +23,12 @@ def set_card_order(cursor, board_id, title):
     order_number = cursor.fetchone()['order_number']
     return order_number
 
+@connection.connection_handler
+def check_existing_username(cursor, username):
+    cursor.execute('''SELECT * FROM users
+                      WHERE user_name = %(username)s''', {'username': username})
+    result = cursor.fetchall()
+    return result
+
 if __name__ == '__main__':
     print(set_card_order(1, 'done card'))
