@@ -54,28 +54,32 @@ export let dom = {
         // it adds necessary event listeners also
     },
     // activate registration button
+
     registration: function () {
-        $('#registrate-button').click(function () {
-            let username = $('#registration-username-input');
-            let passwordFirst = $('#registration-password-first');
-            let passwordSecond = $('#registration-password-second');
-            if (username !== '' && passwordFirst !== '' && passwordSecond !== '') {
-                $.ajax({
-                    url: '/registration',
-                    method: 'POST',
-                    data: {usernama: username, passwordFirst: passwordFirst, passwordSecond: passwordSecond},
-                    success: function (data) {
-                        if (data === 'No') {
-                            alert('nem jao')
+        let username = $('#registration-username-input').val();
+        let passwordFirst = $('#registration-password-first').val();
+        let passwordSecond = $('#registration-password-second').val();
+        let form = $('#registration-form');
+        if (username !== '' && passwordFirst !== '' && passwordSecond !== '') {
+            $.ajax({
+                url: '/registration',
+                data: form.serialize(),
+                type: 'POST',
+                success: console.log('ok')
+            })
+                .then(function (data) {
+                        if (data) {
+                            let message = document.getElementById('registration-modal-body');
+                            // console.loge(data.response);
+                            message.insertAdjacentHTML('beforeend', `<p>${data.response}</p>`);
+                            setTimeout(function () {
+                                message.removeChild(message.lastChild)
+                            }, 3000)
                         } else {
-                            $('#registration-modal').hide();
-                            location.reloda()
+                            window.location.reload()
                         }
                     }
-                })
-            } else {
-                alert('tőcsd ki a összeset')
-            }
-        })
+                )
+        }
     }
 };

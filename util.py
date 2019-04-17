@@ -56,4 +56,4 @@ def verify_password(plain_text_password, hashed_password):
 
 
 if __name__ == '__main__':
-    print(set_card_order(1, 'done card'))
+    print(check_existing_username('balazske96'))

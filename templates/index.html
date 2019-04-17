@@ -17,6 +17,7 @@
         <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
 
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+        <script src="https://code.jquery.com/jquery-3.4.0.min.js" defer></script>
         <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
     </head>
     <body>
@@ -38,25 +39,25 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" id="registration-modal-body">
                   <form method="post" id="registration-form">
                       <div class="form-group">
                         <label for="registration-username-input" class="col-form-label">Username:</label>
-                        <input type="text" class="form-control" id="registration-username-input" placeholder="Username">
+                        <input type="text" class="form-control" id="registration-username-input" placeholder="Username" name="username">
                       </div>
                       <div class="form-group">
                         <label for="registration-password-first" class="col-form-label">Password:</label>
-                        <input type="password" class="form-control" id="registration-password-first" placeholder="Password">
+                        <input type="password" class="form-control" id="registration-password-first" placeholder="Password" name="password_1">
                       </div>
                       <div class="form-group">
                         <label for="inputPassword" class="col-form-label">Password again:</label>
-                        <input type="password" class="form-control" id="registration-password-second" placeholder="Password">
+                        <input type="password" class="form-control" id="registration-password-second" placeholder="Password" name="password_2">
                       </div>
                   </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="#registrate-button">Registrate!</button>
+                <button type="button" class="btn btn-primary" id="registrate-button">Registrate!</button>
               </div>
             </div>
           </div>

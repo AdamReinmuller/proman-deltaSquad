@@ -1,7 +1,8 @@
 from flask import Flask, render_template, url_for, request, json, session, redirect
-from util import json_response, check_existing_username, get_good_hash_by_user_name,verify_password
+from util import json_response, check_existing_username, get_good_hash_by_user_name, verify_password
 import persistence
 import data_handler
+
 
 app = Flask(__name__)
 
@@ -34,19 +35,26 @@ def get_cards_for_board(board_id: int):
 
 
 @app.route('/registration', methods=['POST'])
+@json_response
 def registration():
     if request.method == 'POST':
         try:
-            data = json.loads(request.data)
+            data = request.form
             username = data['username']
-            password_first = data['passwordFirst']
-            password_second = data['passwordSecond']
-            if password_first == password_second and check_existing_username:
-                persistence.registrate_user(username, password_first)
+            password_first = data['password_1']
+            password_second = data['password_2']
+            if password_first == password_second:
+                if not check_existing_username(username):
+                    persistence.registrate_user(username, password_first)
+                else:
+                    data = {'response': 'username already exists'}
+                    return data
+
             else:
-                print('egyelőre nem tom')
+                data = {'response': 'passwords does not match'}
+                return data
         except:
-            print('valami')
+            return 'something went wrong :( '
 
 
 @app.route('/login', methods=['POST'])

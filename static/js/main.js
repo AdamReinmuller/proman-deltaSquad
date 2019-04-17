@@ -1,4 +1,4 @@
-import { dom } from "./dom.js";
+import {dom} from "./dom.js";
 
 // This function is to initialize the application
 function init() {
@@ -7,7 +7,10 @@ function init() {
     // loads the boards to the screen
     dom.loadBoards();
     //activate registration
-    dom.registration();
+    let regStartButton = document.getElementById('registrate-button');
+    regStartButton.addEventListener('click', dom.registration)
+
+
 }
 
 init();
